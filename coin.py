@@ -2,10 +2,10 @@ import coinmarketcapapi
 import time
 import json
 import os
-import config
+import key
 from twython import Twython, TwythonError
 
-apiKey = Twython(config.api_key)
+apiKey = Twython(key.api_key)
 
 def initializeBankData():
     if not os.path.exists('bank.json') or os.path.getsize('bank.json') == 0:
