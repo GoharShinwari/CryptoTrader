@@ -142,11 +142,10 @@ def sellETH(amountUSD):
         print("Cannot sell ETH at this time or insufficient ETH balance.")
         print("")
 
-placeHolder = True
 print("*****************************")
 print("Welcome to CryptoTrader")
 print("*****************************")
-while (placeHolder):
+while (open):
     apiKey = '1a5f0d93-e8eb-4195-bdb9-5ff5fc35cae4' 
     cmcClient = coinmarketcapapi.CoinMarketCapAPI(apiKey)
 
@@ -166,7 +165,7 @@ while (placeHolder):
     displayETHBalance()
     print("")
     
-    print("If you would like to refresh prices, skip all. To exit enter X")
+    print("If you would like to refresh prices, skip all.")
     print("The current price of BTC is: "+str(roundPrice(btcPrice)))
     print("The current price of BTC is: "+str(roundPrice(ethPrice)))
     
@@ -190,8 +189,6 @@ while (placeHolder):
     if decision == "Y": 
         amount = int(input("How much ETH do you wanna sell? ($): "))
         sellETH(amount)
-    if decision == "X":
-        placeHolder = False
         
     time.sleep(5)
 saveData()
