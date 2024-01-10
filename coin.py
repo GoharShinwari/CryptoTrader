@@ -34,28 +34,30 @@ def saveData():
     with open('bank.json', 'w') as file:
         json.dump(data, file)
 
-def roundPrice(price):
-    return round(price, 4)
-
 def displayBank():
     global bankBalance
-    print(f"Your Bank Balance is: {bankBalance}.")
+    roundedBankBalance = round(bankBalance, 2)  
+    print(f"Your Bank Balance is: ${roundedBankBalance}.")
     
 def displayBTCBalance():
     global btcBalance
-    print(f"Your BTC Balance is: {btcBalance}. (${roundPrice(convertToUSD_BTC(btcBalance))})")
-    
+    btcBalanceUSD = convertToUSD_BTC(btcBalance)
+    formattedBTCBalance = '{:.8f}'.format(btcBalance) 
+    print(f"Your BTC Balance is: {formattedBTCBalance}. (${round(btcBalanceUSD, 2)})")
+
 def displayETHBalance():
     global ethBalance
-    print(f"Your ETH Balance is: {ethBalance}. (${roundPrice(convertToUSD_ETH(ethBalance))})")
+    ethBalanceUSD = convertToUSD_ETH(ethBalance)
+    formattedETHBalance = '{:.8f}'.format(ethBalance)
+    print(f"Your ETH Balance is: {formattedETHBalance}. (${round(ethBalanceUSD, 2)})")
 
 def convertToBTC(amount):
     btc_amount = amount / btcPrice
-    return roundPrice(btc_amount)
+    return btc_amount
 
 def convertToETH(amount):
     eth_amount = amount / ethPrice
-    return roundPrice(eth_amount)
+    return eth_amount
 
 def convertToUSD_BTC(BTC):
     USD = BTC * btcPrice
@@ -70,13 +72,13 @@ def buyBTC(amount):
     global bankBalance
     global btcBalance
 
-    if decision == 'Y' and bankBalance > amount:
+    if decision == 'Y' and bankBalance >= amount:
         btc_amount = convertToBTC(amount)
         if btc_amount > -1:
             bankBalance -= amount
             btcBalance += btc_amount
             ## btcSupply -= btc_amount
-            print(f"Successfully bought {btc_amount} BTC.")
+            print(f"Successfully bought {round(btc_amount, 8)} BTC.")
             print("")
             saveData() 
         else:
@@ -90,13 +92,13 @@ def buyETH(amount):
     global bankBalance
     global ethBalance
          
-    if decision == 'Y' and bankBalance > amount:
+    if decision == 'Y' and bankBalance >= amount:
         eth_amount = convertToETH(amount)
         if eth_amount > -1:
             bankBalance -= amount
             ethBalance += eth_amount
             ## ethSupply -= eth_amount
-            print(f"Successfully bought {eth_amount} ETH.")
+            print(f"Successfully bought {round(eth_amount, 8)} ETH.")
             print("")
             saveData()
         else:
@@ -116,7 +118,7 @@ def sellBTC(amountUSD):
         bankBalance += btcAmount * btcPrice
         btcBalance -= btcAmount
         amountUSDSold = btcAmount * btcPrice
-        print(f"Successfully sold {btcAmount} BTC for {amountUSDSold} USD.")
+        print(f"Successfully sold {round(btcAmount, 8)} BTC for {round(amountUSDSold, 2)} USD.")
         print("")
         saveData()
         return amountUSDSold
@@ -134,7 +136,7 @@ def sellETH(amountUSD):
         bankBalance += ethAmount * ethPrice
         ethBalance -= ethAmount
         amountUSDSold = ethAmount * ethPrice
-        print(f"Successfully sold {ethAmount} ETH for {amountUSDSold} USD.")
+        print(f"Successfully sold {round(ethAmount, 8)} ETH for {round(amountUSDSold, 2)} USD.")
         print("")
         saveData()
         return amountUSDSold
@@ -166,28 +168,28 @@ while (open):
     print("")
     
     print("If you would like to refresh prices, skip all.")
-    print("The current price of BTC is: "+str(roundPrice(btcPrice)))
-    print("The current price of BTC is: "+str(roundPrice(ethPrice)))
+    print("The current price of BTC is: "+str(round(btcPrice, 3)))
+    print("The current price of BTC is: "+str(round(ethPrice, 3)))
     
     print("")
     decision = input("Would you like to buy BTC? (Y/N): ")
     if decision == "Y": 
-        amount = int(input("How much BTC do you wanna buy? ($): "))
+        amount = float(input("How much BTC do you wanna buy? ($): "))
         buyBTC(amount)
         
     decision = input("Would you like to buy ETH? (Y/N): ")
     if decision == "Y": 
-        amount = int(input("How much ETH do you wanna buy? ($): "))
+        amount = float(input("How much ETH do you wanna buy? ($): "))
         buyETH(amount)
             
     decision = input("Would you like to sell BTC? (Y/N): ")
     if decision == "Y": 
-        amount = int(input("How much BTC do you wanna sell? ($): "))
+        amount = float(input("How much BTC do you wanna sell? ($): "))
         sellBTC(amount)
                
     decision = input("Would you like to sell ETH? (Y/N): ")
     if decision == "Y": 
-        amount = int(input("How much ETH do you wanna sell? ($): "))
+        amount = float(input("How much ETH do you wanna sell? ($): "))
         sellETH(amount)
         
     time.sleep(5)
