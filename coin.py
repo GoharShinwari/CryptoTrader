@@ -4,8 +4,11 @@ import json
 import os
 import key
 from twython import Twython, TwythonError
+import key
 
-apiKey = Twython(key.api_key)
+# Initialize Twython with the API key
+apiKey = key.api_key
+twitter = Twython(apiKey)
 
 def initializeBankData():
     if not os.path.exists('bank.json') or os.path.getsize('bank.json') == 0:
@@ -148,7 +151,7 @@ print("*****************************")
 print("Welcome to CryptoTrader")
 print("*****************************")
 while (open):
-    apiKey = '1a5f0d93-e8eb-4195-bdb9-5ff5fc35cae4' 
+    apiKey = apiKey
     cmcClient = coinmarketcapapi.CoinMarketCapAPI(apiKey)
 
     btcResponse = cmcClient.tools_priceconversion(amount = 1, symbol = 'BTC', convert = 'USD')
@@ -166,31 +169,32 @@ while (open):
     displayBTCBalance()
     displayETHBalance()
     print("")
-    
     print("If you would like to refresh prices, skip all.")
-    print("The current price of BTC is: "+str(round(btcPrice, 3)))
-    print("The current price of BTC is: "+str(round(ethPrice, 3)))
+    print("The current price of BTC is: " + str(round(btcPrice, 3)))
+    print("The current price of ETH is: " + str(round(ethPrice, 3)))
+    print("")
+
     
     print("")
     decision = input("Would you like to buy BTC? (Y/N): ")
-    if decision == "Y": 
-        amount = float(input("How much BTC do you wanna buy? ($): "))
+    if decision == "Y":
+        amount = float(input("How much BTC do you want to buy? ($): "))
         buyBTC(amount)
-        
+
     decision = input("Would you like to buy ETH? (Y/N): ")
-    if decision == "Y": 
-        amount = float(input("How much ETH do you wanna buy? ($): "))
+    if decision == "Y":
+        amount = float(input("How much ETH do you want to buy? ($): "))
         buyETH(amount)
-            
+
     decision = input("Would you like to sell BTC? (Y/N): ")
-    if decision == "Y": 
-        amount = float(input("How much BTC do you wanna sell? ($): "))
+    if decision == "Y":
+        amount = float(input("How much BTC do you want to sell? ($): "))
         sellBTC(amount)
-               
+
     decision = input("Would you like to sell ETH? (Y/N): ")
-    if decision == "Y": 
-        amount = float(input("How much ETH do you wanna sell? ($): "))
+    if decision == "Y":
+        amount = float(input("How much ETH do you want to sell? ($): "))
         sellETH(amount)
-        
-    time.sleep(5)
+
+    time.sleep(5) 
 saveData()
